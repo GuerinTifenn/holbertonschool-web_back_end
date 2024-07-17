@@ -35,23 +35,23 @@ export default class HolbertonCourse {
     return this._name;
   }
 
-  set name(value) {
-    this._name = this.validateString(value, 'Name');
+  set name(newName) {
+    this._name = this.validateString(newName, 'Name');
   }
 
   get length() {
     return this._length;
   }
 
-  set length(value) {
-    this._length = this.validateNumber(value, 'Length');
+  set length(newLength) {
+    this._length = this.validateNumber(newLength, 'Length');
   }
 
   get students() {
     return this._students;
   }
 
-  set students(value) {
-    this._students = this.validateArray(value, 'Students');
+  set students(newStudents) {
+    this._students = this.validateArray(newStudents, 'Students');
   }
 }
