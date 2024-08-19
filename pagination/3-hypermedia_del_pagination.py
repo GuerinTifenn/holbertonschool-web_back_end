@@ -6,8 +6,6 @@ Deletion-resilient hypermedia pagination
 import csv
 from typing import List, Dict, Optional
 
-index_range = __import__('0-simple_helper_function').index_range
-
 
 class Server:
     """Server class to paginate a database of popular baby names.
@@ -31,37 +29,30 @@ class Server:
         """Dataset indexed by sorting position, starting at 0"""
         if self.__indexed_dataset is None:
             dataset = self.dataset()
+            truncated_dataset = dataset[:1000]
             self.__indexed_dataset = {
                 i: dataset[i] for i in range(len(dataset))
             }
         return self.__indexed_dataset
 
-    def get_hyper_index(
-        self, index: Optional[int] = None, page_size: int = 10
-    ) -> Dict:
+    def get_hyper_index(self, index: int = None, page_size: int = 10) -> Dict:
+        """Returns a dictionary with key-value pairs
         """
-        Return a dictionary with pagination data that is deletion-resilient.
-        """
-        assert index is not None and isinstance(index, int) and index >= 0
-        assert isinstance(page_size, int) and page_size > 0
-
-        indexed_data = self.indexed_dataset()
-        data: List[List] = []
-        current_index = index
-
-        while len(data) < page_size and current_index < len(indexed_data):
-            if current_index in indexed_data:
-                data.append(indexed_data[current_index])
-            current_index += 1
-
-        if current_index < len(indexed_data):
-            next_index = current_index
-        else:
-            next_index = None
-
-        return {
-            "index": index,
-            "next_index": next_index,
-            "page_size": len(data),
-            "data": data
+        dataset = self.indexed_dataset()
+        assert index > 0 and index < len(dataset) and index
+        next_index = index + page_size
+        data = []
+        for i in range(index, next_index):
+            if i not in dataset:
+                next_index += 1
+                index += 1
+        for i in range(index, next_index):
+            data.append(dataset[i])
+        params = {
+            'index': index,
+            'next_index': next_index,
+            'page_size': page_size,
+            'data': data
         }
+
+        return params
