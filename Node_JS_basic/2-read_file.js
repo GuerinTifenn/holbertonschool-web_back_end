@@ -7,6 +7,7 @@ const fs = require('fs');
  * @param {String} dataPath The path to the CSV data file.
  * @author Bezaleel Olakunori <https://github.com/B3zaleel>
  */
+
 const countStudents = (dataPath) => {
   if (!fs.existsSync(dataPath)) {
     throw new Error('Cannot load the database');
