@@ -1,12 +1,15 @@
 #!/usr/bin/env node
 
-console.log('Welcome to Holberton School, what is your name?');
+process.stdout.write('Welcome to Holberton School, what is your name?\n');
+
 process.stdin.on('readable', () => {
-  const input = process.stdin.read();
-  if (input !== null) {
-    process.stdout.write(`Your name is: ${input}`);
+  const chunk = process.stdin.read();
+
+  if (chunk) {
+    process.stdout.write(`Your name is: ${chunk}`);
   }
 });
+
 process.stdin.on('end', () => {
-  console.log('This important software is now closing');
+  process.stdout.write('This important software is now closing\n');
 });
